@@ -59,6 +59,7 @@
     calibre
     zoom-us
     os-prober
+    jetbrains.clion
 
 
     # fonts

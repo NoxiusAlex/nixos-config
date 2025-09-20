@@ -34,7 +34,7 @@
       aniparser = inputs.aniparser.packages.${system}.default;
       caelestia-cli = inputs.caelestia-cli.packages.${system}.with-shell;
       zen-browser = inputs.zen-browser.packages."${system}".specific;
-      user = "sinedka";
+      user = "noxiusalex";
       hostname = "nixosuser";
       stateVersion = "25.05";
     in
