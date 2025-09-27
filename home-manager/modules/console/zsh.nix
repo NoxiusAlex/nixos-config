@@ -65,11 +65,8 @@
       "...." = "cd ../../..";
 
 
-      rebuild = "sudo nixos-rebuild switch";
-      hm-switch = "home-manager switch";
-      hm-edit = "$EDITOR ~/.config/home-manager/home.nix";
+      rebuild = "sudo nixos-rebuild switch --flake ~/nix";
       nix-search = "nix search nixpkgs";
-      nix-shell = "nix-shell --run zsh";
 
 
       gst = "git status";
@@ -100,7 +97,7 @@
     };
 
 
-    initExtra = ''
+    initContent = ''
 
       mkcd() {
         mkdir -p "$1" && cd "$1"
@@ -134,10 +131,6 @@
         dir=$(find . -type d -not -path '*/.*' 2>/dev/null | fzf) && cd "$dir"
       }
 
-
-      if command -v direnv &> /dev/null; then
-        eval "$(direnv hook zsh)"
-      fi
       if command -v zoxide &> /dev/null; then
         eval "$(zoxide init zsh)"
       fi
@@ -187,17 +180,10 @@
     };
   };
 
-
-  programs.git = {
+  programs.direnv = {
     enable = true;
-    extraConfig = {
-      core.pager = "delta";
-      interactive.diffFilter = "delta --color-only";
-      delta = {
-        navigate = true;
-        line-numbers = true;
-      };
-    };
+    nix-direnv.enable = true;
   };
+
 }
 

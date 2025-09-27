@@ -27,51 +27,42 @@
     cava
     playerctl
     kitty
-    firefox
     gcc
     telegram-desktop
-    ntfs3g
     nil
     wl-clipboard
     nix-prefetch
     openssl
     yad
-    prismlauncher
     pavucontrol
     nftables
     hyprshot
-    brave
     nautilus
     hyprpicker
-    wf-recorder
-    slurp
-    quickemu
+    # wf-recorder
+    # slurp
     spotify
-    quickgui
-    qmk
-    qmk-udev-rules # the only relevant
-    qmk_hid
-    via
-    vial
-    mpv
     glslls
     qt6.full
     calibre
     zoom-us
     os-prober
-    jetbrains.clion
-
-
+    # jetbrains.clion
+    thunderbird
+    vulkan-tools
+    lutris
+    brave
+    gnumake
+    code-cursor
+    
     # fonts
     material-symbols
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
     rubik
     grim
-    
   ]) ++ ([
     aniparser
-    (pkgs.callPackage ./screen-rec.nix {})
     caelestia-cli
   ]);
 

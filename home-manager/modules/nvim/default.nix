@@ -1,6 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    clang-tools
+    rr
+    gdb
+  ];
+
   programs.neovim = {
     enable = true;
     extraPackages = with pkgs; [
@@ -18,167 +24,31 @@
       gnumake
       lazygit
       clang-tools
+      nodejs_20
+      gcc
+      pnpm
+      (import ./codeforces-extractor.nix { pkgs = pkgs; })
     ];
 
     plugins = with pkgs.vimPlugins; [
       lazy-nvim
     ];
-
-    extraLuaConfig =
-      let
-        plugins = with pkgs.vimPlugins; [
-          nvim-notify
-          alpha-nvim
-          blink-cmp
-          blink-compat
-          bufferline-nvim
-          comment-nvim
-          fidget-nvim
-          flash-nvim
-          friendly-snippets
-          galaxyline-nvim
-          git-conflict-nvim
-          git-worktree-nvim
-          hydra-nvim
-          lazy-nvim
-          luasnip
-          marks-nvim
-          mini-ai
-          mini-align
-          # neovim-session-manager
-          noice-nvim
-          nui-nvim
-          numb-nvim
-          nvim-highlight-colors
-          nvim-lspconfig
-          nvim-navic
-          nvim-scissors
-          nvim-sops
-          nvim-surround
-          nvim-tree-lua
-          nvim-treesitter
-          nvim-treesitter-textobjects
-          nvim-treesitter-textsubjects
-          nvim-ts-context-commentstring
-          nvim-ufo
-          nvim-web-devicons
-          package-info-nvim
-          plenary-nvim
-          popup-nvim
-          promise-async
-          rainbow-delimiters-nvim
-          smart-splits-nvim
-          snacks-nvim
-          switch-vim
-          telescope-fzf-native-nvim
-          telescope-nvim
-          todo-comments-nvim
-          typescript-tools-nvim
-          ultimate-autopair-nvim
-          vim-repeat
-          vim-rooter
-          vim-speeddating
-          which-key-nvim
-          codecompanion-nvim
-          codesnap-nvim
-          comment-box-nvim
-          conform-nvim
-          diffview-nvim
-          FixCursorHold-nvim
-          fzf-lua
-          gitlinker-nvim
-          gitsigns-nvim
-          indent-blankline-nvim
-          markdown-preview-nvim
-          neotest
-          neotest-jest
-          nvim-autopairs
-          nvim-bqf
-          nvim-coverage
-          nvim-dap
-          nvim-dap-ui
-          nvim-dap-virtual-text
-          nvim-lint
-          nvim-lsp-file-operations
-          nvim-nio
-          nvim-spectre
-          nvim-ts-autotag
-          octo-nvim
-          refactoring-nvim
-          render-markdown-nvim
-          template-string-nvim
-          text-case-nvim
-          toggleterm-nvim
-          treesj
-          tsc-nvim
-          vim-table-mode
-        ];
-        mkEntryFromDrv = drv:
-          if lib.isDerivation drv then
-            { name = "${lib.getName drv}"; path = drv; }
-          else
-            drv;
-        lazyPath = pkgs.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv plugins);
-      in
-      ''
-        require('config.MainConf')
-        require('utils.globals')
-        require('utils.functions')
-       
-        require('config.options')
-
-        require("lazy").setup("plugins", {
-          defaults = { lazy = false },
-          -- install = { colorscheme = { "tokyonight" } },
-          checker = { enabled = true },
-          concurrency = 10,
-
-          dev = {
-            -- reuse files from pkgs.vimPlugins.*
-            path = "${lazyPath}",
-            patterns = { "" },
-            -- fallback to download
-            fallback = true,
-          },
-
-
-          performance = {
-            rtp = {
-              disabled_plugins = {
-                "gzip",
-                "netrwPlugin",
-                "tarPlugin",
-                "tutor",
-                "zipPlugin",
-              },
-            },
-          },
-          debug = false,
-          ui = {
-            border = "rounded",
-          }
-        })
-
-        require('config.keymappings')
-        require('config.autocmds')
-
-        require('internal.cursorword')
-      '';
   };
 
   # https://github.com/nvim-treesitter/nvim-treesitter#i-get-query-error-invalid-node-type-at-position
-  xdg.configFile."nvim/parser".source =
-    let
-      parsers = pkgs.symlinkJoin {
-        name = "treesitter-parsers";
-        paths = (pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
-          c
-          lua
-        ])).dependencies;
-      };
-    in
-    "${parsers}/parser";
+  # xdg.configFile."nvim/parser".source =
+  #   let
+  #     parsers = pkgs.symlinkJoin {
+  #       name = "treesitter-parsers";
+  #       paths = (pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
+  #         c
+  #         lua
+  #       ])).dependencies;
+  #     };
+  #   in
+  #   "${parsers}/parser";
 
   # Normal LazyVim config here, see https://github.com/LazyVim/starter/tree/main/lua
-  xdg.configFile."nvim/lua".source = ./ecovim/lua;
+  home.file.".config/nvim".source = ./nvim;
+  home.file.".config/nvim".recursive = true;
 }

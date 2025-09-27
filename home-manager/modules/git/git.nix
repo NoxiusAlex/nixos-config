@@ -1,8 +1,8 @@
 {
   programs.git = {
     enable = true;
-    userName = "Sinedka";
-    userEmail = "dennnn8888@gmail.com";
+    userName = "NoxiusAlex";
+    userEmail = "alex@demkino.ru";
     extraConfig = {
       init.defaultBranch = "main";
       pull.rebase = false;
