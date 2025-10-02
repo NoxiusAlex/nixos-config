@@ -5,7 +5,12 @@
     clang-tools
     rr
     gdb
+   vscode-extensions.vadimcn.vscode-lldb 
   ];
+
+  home.sessionVariables = {
+    CODELLDB_PATH = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb";
+  };
 
   programs.neovim = {
     enable = true;
@@ -27,7 +32,6 @@
       nodejs_20
       gcc
       pnpm
-      (import ./codeforces-extractor.nix { pkgs = pkgs; })
     ];
 
     plugins = with pkgs.vimPlugins; [
